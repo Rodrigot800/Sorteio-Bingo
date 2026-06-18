@@ -78,7 +78,11 @@
                 onkeydown="if(event.ctrlKey && event.key==='Enter') verifyCard()"
                 rows="3"
             ></textarea>
-            <p class="check-hint">Todos os números informados precisam já ter sido sorteados</p>
+            <p class="check-hint">
+                🌟 A casa <strong>FREE</strong> (centro) é contada automaticamente.
+                Digite <strong>4 números</strong> para quizena ou <strong>24 números</strong> para cartela cheia.
+                Separados por <strong>espaço</strong>.
+            </p>
             <div class="modal-actions">
                 <button class="btn-verify" onclick="verifyCard()">✅ Verificar</button>
                 <button class="btn-cancel" onclick="closeCheckModal()">Cancelar</button>
@@ -109,9 +113,9 @@
     <div class="winner-overlay" id="winnerOverlay">
         <canvas id="confettiCanvas"></canvas>
         <div class="winner-box">
-            <span class="winner-emoji">🏆</span>
-            <div class="winner-title">BINGO!!!</div>
-            <div class="winner-subtitle">Parabéns! Todos os números conferem! 🎉</div>
+            <span class="winner-emoji" id="winnerEmoji">🏆</span>
+            <div class="winner-title" id="winnerTitle">BINGO!!!</div>
+            <div class="winner-subtitle" id="winnerSubtitle">Parabéns! Todos os números conferem! 🎉</div>
             <button class="btn-winner-close" onclick="closeWinner()">Fechar</button>
         </div>
     </div>

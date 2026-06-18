@@ -197,6 +197,23 @@ function closeConfirmModal() {
 /* ------------------------------------------
    CARD VERIFICATION MODAL
    ------------------------------------------ */
+
+// Modos de vitória com FREE (casa central livre)
+// Quizena  = linha completa de 5 casas, mas o FREE conta como 1 → 4 números
+// Completo = todas as 25 casas, mas o FREE conta como 1 → 24 números
+const WIN_MODES = {
+    4:  {
+        emoji: '🏅',
+        title: 'QUIZENA!',
+        sub:   'Parabéns! Você completou uma linha! A casa FREE foi contabilizada automaticamente.'
+    },
+    24: {
+        emoji: '🏆',
+        title: 'BINGO!!!',
+        sub:   'Parabéns! Cartela completa! A casa FREE no centro foi contabilizada automaticamente. 🎊'
+    }
+};
+
 function openCheckModal() {
     document.getElementById('checkInput').value        = '';
     document.getElementById('checkResult').textContent = '';
@@ -213,27 +230,40 @@ function verifyCard() {
     const raw      = document.getElementById('checkInput').value;
     const resultEl = document.getElementById('checkResult');
 
-    // Separado apenas por espaço(s)
+    // Separa somente por espaço(s)
     const inputNums = raw.trim().split(/\s+/)
         .map(s => parseInt(s, 10))
         .filter(n => !isNaN(n) && n >= 1 && n <= 75);
 
-    if (inputNums.length === 0) {
+    // Remove duplicatas caso o jogador digit dois vezes o mesmo número
+    const unique = [...new Set(inputNums)];
+
+    if (unique.length === 0) {
         showCheckError(resultEl, '⚠️ Digite ao menos um número válido (1–75).');
         return;
     }
 
-    const notDrawn = inputNums.filter(n => !drawnNumbers.includes(n));
+    // Valida quantidade: 4 = quizena | 24 = cartela cheia
+    const mode = WIN_MODES[unique.length];
+    if (!mode) {
+        const msg = unique.length < 4
+            ? `⚠️ Poucos números. Digite 4 (quizena) ou 24 (cartela cheia). Você digitou ${unique.length}.`
+            : `⚠️ Números demais. Digite 4 (quizena) ou 24 (cartela cheia). Você digitou ${unique.length}.`;
+        showCheckError(resultEl, msg);
+        return;
+    }
 
+    // Verifica se todos foram sorteados
+    const notDrawn = unique.filter(n => !drawnNumbers.includes(n));
     if (notDrawn.length > 0) {
         showCheckError(resultEl,
             `❌ Número(s) não sorteado(s) ainda: ${notDrawn.join(' ')}`);
         return;
     }
 
-    // Todos conferem → VENCEDOR!
+    // Tudo certo → VENCEDOR!
     closeCheckModal();
-    showWinner();
+    showWinner(mode);
 }
 
 function showCheckError(el, msg) {
@@ -247,7 +277,10 @@ function showCheckError(el, msg) {
 /* ------------------------------------------
    WINNER CELEBRATION
    ------------------------------------------ */
-function showWinner() {
+function showWinner(mode) {
+    document.getElementById('winnerEmoji').textContent    = mode.emoji;
+    document.getElementById('winnerTitle').textContent    = mode.title;
+    document.getElementById('winnerSubtitle').textContent = mode.sub;
     document.getElementById('winnerOverlay').classList.add('active');
     startConfetti();
 }
