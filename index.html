@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Bingo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- CONTROLS -->
+        <div class="controls">
+            <button class="btn-draw"  onclick="drawNumber()">Sortear Número</button>
+            <button class="btn-auto"  onclick="toggleAuto()">Auto Sorteio</button>
+            <button class="btn-check" onclick="openCheckModal()">🏆 Verificar Cartela</button>
+            <button class="btn-reset" onclick="resetGame()">Reiniciar</button>
+        </div>
+
+        <!-- CURRENT NUMBER -->
+        <div class="current-number">
+            <div class="current-number-display" id="currentNumber">?</div>
+            <p class="current-number-label">Último número sorteado</p>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+
+            <!-- BINGO BOARD -->
+            <div class="bingo-board">
+                <div class="board-header">
+                    <span class="header-b">B</span>
+                    <span class="header-i">I</span>
+                    <span class="header-n">N</span>
+                    <span class="header-g">G</span>
+                    <span class="header-o">O</span>
+                </div>
+                <div class="board-numbers" id="boardNumbers"></div>
+
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color b"></div><span>B (1–15)</span></div>
+                    <div class="legend-item"><div class="legend-color i"></div><span>I (16–30)</span></div>
+                    <div class="legend-item"><div class="legend-color n"></div><span>N (31–45)</span></div>
+                    <div class="legend-item"><div class="legend-color g"></div><span>G (46–60)</span></div>
+                    <div class="legend-item"><div class="legend-color o"></div><span>O (61–75)</span></div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR: drawn numbers -->
+            <div class="sidebar">
+                <div class="drawn-list">
+                    <h2>📋 Números Sorteados</h2>
+                    <div class="drawn-count" id="drawnCount">0 de 75 números</div>
+                    <div class="drawn-numbers" id="drawnNumbers">
+                        <p class="no-numbers">Nenhum número sorteado ainda</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: VERIFICAR CARTELA
+         ============================================================ -->
+    <div class="modal-overlay" id="checkModal">
+        <div class="modal-box check-box">
+            <h2>🎯 Verificar Cartela</h2>
+            <p class="modal-subtitle">
+                Digite os números da sua cartela separados por <strong>espaço</strong>
+            </p>
+            <textarea
+                class="check-input"
+                id="checkInput"
+                placeholder="Ex: 5 22 38 47 63"
+                onkeydown="if(event.ctrlKey && event.key==='Enter') verifyCard()"
+                rows="3"
+            ></textarea>
+            <p class="check-hint">
+                🌟 A casa <strong>FREE</strong> (centro) é contada automaticamente.
+                Digite <strong>4 números</strong> para quizena ou <strong>24 números</strong> para cartela cheia.
+                Separados por <strong>espaço</strong>.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-verify" onclick="verifyCard()">✅ Verificar</button>
+                <button class="btn-cancel" onclick="closeCheckModal()">Cancelar</button>
+            </div>
+            <div class="check-result" id="checkResult"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL: CONFIRMAR REINÍCIO
+         ============================================================ -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box confirm-box">
+            <h2>⚠️ Reiniciar Jogo?</h2>
+            <p class="modal-subtitle">
+                Todos os números sorteados serão apagados.<br>Tem certeza que deseja reiniciar?
+            </p>
+            <div class="modal-actions">
+                <button class="btn-confirm-yes" onclick="confirmReset()">✔ Sim, reiniciar</button>
+                <button class="btn-cancel"      onclick="closeConfirmModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         WINNER OVERLAY
+         ============================================================ -->
+    <div class="winner-overlay" id="winnerOverlay">
+        <canvas id="confettiCanvas"></canvas>
+        <div class="winner-box">
+            <span class="winner-emoji" id="winnerEmoji">🏆</span>
+            <div class="winner-title" id="winnerTitle">BINGO!!!</div>
+            <div class="winner-subtitle" id="winnerSubtitle">Parabéns! Todos os números conferem! 🎉</div>
+            <button class="btn-winner-close" onclick="closeWinner()">Fechar</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
