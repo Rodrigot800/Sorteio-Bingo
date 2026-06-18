@@ -203,14 +203,24 @@ function closeConfirmModal() {
 // Completo = todas as 25 casas, mas o FREE conta como 1 → 24 números
 const WIN_MODES = {
     4:  {
-        emoji: '🏅',
+        emoji: '🏆',
         title: 'QUIZENA!',
         sub:   'Parabéns! Você completou uma linha! A casa FREE foi contabilizada automaticamente.'
+    },
+    5: {
+        emoji: '🏆',
+        title: 'QUIZENA!',
+        sub:   'Parabéns! Você completou uma linha! (5 números incluídos).'
     },
     24: {
         emoji: '🏆',
         title: 'BINGO!!!',
         sub:   'Parabéns! Cartela completa! A casa FREE no centro foi contabilizada automaticamente. 🎊'
+    },
+    25: {
+        emoji: '🏆',
+        title: 'BINGO!!!',
+        sub:   'Parabéns! Cartela completa! (25 números incluídos). 🎊'
     }
 };
 
@@ -247,8 +257,8 @@ function verifyCard() {
     const mode = WIN_MODES[unique.length];
     if (!mode) {
         const msg = unique.length < 4
-            ? `⚠️ Poucos números. Digite 4 (quizena) ou 24 (cartela cheia). Você digitou ${unique.length}.`
-            : `⚠️ Números demais. Digite 4 (quizena) ou 24 (cartela cheia). Você digitou ${unique.length}.`;
+            ? `⚠️ Poucos números. Digite 4‑5 (quizena) ou 24‑25 (cartela cheia). Você digitou ${unique.length}.`
+            : `⚠️ Números demais. Digite 4‑5 (quizena) ou 24‑25 (cartela cheia). Você digitou ${unique.length}.`;
         showCheckError(resultEl, msg);
         return;
     }
